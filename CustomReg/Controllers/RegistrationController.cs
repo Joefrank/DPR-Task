@@ -51,6 +51,7 @@ namespace CustomReg.Controllers
         /// </summary>
         /// <param name="customerModel"></param>
         /// <returns></returns>
+        /// ///TODO: we can also overwrite the Required attribute with our config by removing errors for fields whose Required is set to false in config
         [HttpPost]
         public ActionResult SubmitRegistration(RegistrationViewModel customerModel)
         {
@@ -65,6 +66,7 @@ namespace CustomReg.Controllers
                     ModelState[field.Name].Errors.Clear();
                     continue;
                 }
+                
                
                 var property = customerModel.GetType().GetProperty(field.Name);
                 var value = string.Empty;
