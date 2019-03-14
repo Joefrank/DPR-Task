@@ -1,0 +1,29 @@
+﻿@model Dictionary<string, string>
+
+@{
+    ViewBag.Title = "Thank You";
+    Layout = null;
+}
+
+<h2>Thank You</h2>
+
+<p>
+    The following details were registered:
+</p>
+
+<div>
+    <table>
+        <tr>
+            <th>Field Name</th>
+            <th>Value</th>
+        </tr>
+        @foreach (var key in Model.Keys)
+        {
+            <tr>
+                <td>@key</td>
+                <td>@Model[key]</td>
+            </tr>
+        }
+    </table>
+</div>
+

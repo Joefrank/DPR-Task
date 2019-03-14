@@ -1,0 +1,52 @@
+﻿@model  IEnumerable<CustomReg.Domain.FieldConfig>
+
+@{
+    ViewBag.Title = "Index";
+    var index = 0;
+   
+}
+
+<h2>Registration Fields Configuration</h2>
+
+<p>
+    Please configure your fields below
+</p>
+
+<div>
+    <form action="/config/SaveConfig" method="post" >
+        <table>
+            <tr>
+                <th>
+                    Field Name
+                </th>
+                <th>
+                    Visible
+                </th>
+                <th>
+                    Required
+                </th>
+            </tr>
+            
+            @foreach (var template in Model)
+            {
+                var isRequired = template.Required? " Checked " : "";
+                var isVisible = template.IsVisible? " Checked " : "";
+                <tr>
+                    <td>
+                        @template.Name
+                        <input type="hidden" name="templateModel[@index].Name" value="@template.Name"/>
+                    </td>
+                    <td><input type="checkbox" name="templateModel[@index].IsVisible" @isVisible value="true"/></td>
+                    <td><input type="checkbox" name="templateModel[@index].Required" @isRequired value="true"/></td>
+                    @{ index++;}
+                </tr>
+            }
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Submit"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
