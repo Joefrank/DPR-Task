@@ -1,1 +1,1 @@
-[{"Name":"FirstName","IsVisible":true,"Required":false},{"Name":"LastName","IsVisible":true,"Required":false},{"Name":"DateOfBirth","IsVisible":true,"Required":false},{"Name":"LoginId","IsVisible":false,"Required":true},{"Name":"Password","IsVisible":false,"Required":false}]
+[{"Name":"FirstName","IsVisible":false,"Required":false},{"Name":"LastName","IsVisible":true,"Required":false},{"Name":"DateOfBirth","IsVisible":true,"Required":false},{"Name":"LoginId","IsVisible":false,"Required":true},{"Name":"Password","IsVisible":false,"Required":false}]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Web.Mvc;
 using CustomReg.Domain;
 using CustomReg.Models;
@@ -53,20 +54,23 @@ namespace CustomReg.Controllers
         [HttpPost]
         public ActionResult SubmitRegistration(RegistrationViewModel customerModel)
         {
-            ModelState.AddModelError("FirstName", "You need to provide first name");
             var config = _fileManager.LoadContentAs<IEnumerable<FieldConfig>>(TemplateFilePath);
-            customerModel.Config = config;
-            return View("FillForm", customerModel);
-
-            //validate input based on config
-           
             var resultingFields = new Dictionary<string, string>();
 
-            //register customer
             foreach (var field in config)
             {
+                //remove errors for any field that is not visible
+                if (!field.IsVisible && ModelState[field.Name] != null && ModelState[field.Name].Errors.Any())
+                {
+                    ModelState[field.Name].Errors.Clear();
+                    continue;
+                }
+               
                 var property = customerModel.GetType().GetProperty(field.Name);
                 var value = string.Empty;
+
+                if (field.IsVisible && property != null)
+                {
 
                 if (property?.PropertyType.Name == "String")
                 {
@@ -76,15 +80,19 @@ namespace CustomReg.Controllers
                 {
                     value = ((DateTime)(property?.GetValue(customerModel, null))).ToString("d");
                 }
-                
-                if (field.IsVisible && property != null)
-                {
-                    resultingFields.Add(field.Name,value);
+                    resultingFields.Add(field.Name, value);
                 }
-                
             }
-            //display result
 
+            //if model is still not valid, we need to not continue
+            if (!ModelState.IsValid)
+            {
+                customerModel.Config = config;
+                return View("FillForm", customerModel);
+            }   
+            
+          
+            //display result
             return View("ThankYou", resultingFields);
         }
 
